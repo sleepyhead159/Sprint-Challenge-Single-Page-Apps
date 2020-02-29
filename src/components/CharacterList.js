@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default function CharacterList( props ) {
   // TODO: Add useState to track data from useEffect
-  const [character, setCharacter] = useState( [] );
+  const {charList, setCharList} = props;
   
   useEffect(() => {
     // TODO: Add API Request here - must run in `useEffect`
@@ -11,10 +11,10 @@ export default function CharacterList( props ) {
 
     const getCharacters = () => {
       axios
-        .get('https://rickandmortyapi.com/api/')
+        .get('https://rickandmortyapi.com/api/character/')
         .then( response => {
-          console.log(response.data)
-          setCharacter(response.data);
+          console.log(response.data.results)
+          setCharList(response.data.results);
         })
         .catch( error => {
           console.error( error ); 
@@ -23,9 +23,18 @@ export default function CharacterList( props ) {
     getCharacters();
   }, []);
 
+  const listChar = charList.map((char) => {
+    console.log(char)
+    return (
+      <div key = {char.id}>
+        {char.name}
+      </div>
+    )
+  })
+
   return (
     <section className="character-list">
-         
+      {listChar}
     </section>
   );
 }
